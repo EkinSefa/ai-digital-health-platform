@@ -1,0 +1,23 @@
+<!-- Back to Top Button -->
+<button id="backToTopBtn" class="btn btn-sm btn-outline-primary" style="position: fixed; bottom: 30px; right: 30px; display: none;">
+    <i class="fa fa-arrow-up fa-lg"></i>
+</button>
+
+<script>
+    // Get the button
+    var backToTopBtn = document.getElementById("backToTopBtn");
+
+    // Show the button when the user scrolls down
+    window.onscroll = function() {
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            backToTopBtn.style.display = "block";
+        } else {
+            backToTopBtn.style.display = "none";
+        }
+    };
+
+    // Scroll to the top when the button is clicked
+    backToTopBtn.onclick = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>

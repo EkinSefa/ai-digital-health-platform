@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block page_title %}
+| Eğitimler
+{% endblock page_title %}
+
+{% block egitimler %}
+<!-- Koyu Tema Arka Plan -->
+<div class="container-fluid py-5" style="background-color: #121212; min-height: 100vh;">
+    <div class="row">
+        <!-- Sol Menü -->
+        <div class="col-md-3 mb-4">
+            <div class="bg-dark text-white rounded p-4 shadow-sm">
+                <h5 class="mb-3"><i class="fa fa-video-camera"></i> Eğitim Videoları</h5>
+                <ul class="list-group list-group-flush">
+                    {% for i in "123456"|make_list %}
+                    <li class="list-group-item bg-dark text-white border-0 px-0 py-2">
+                        <a href="javascript:void(0)" onclick="showVideoCard('Anatomy{{ i }}')" class="text-decoration-none text-light">
+                            Anatomy {{ i }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item bg-dark text-white border-0 px-0 py-2">
+                        <a href="javascript:void(0)" onclick="showAllVideos()" class="text-decoration-none text-info">
+                            Tüm Videoları Göster
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sağ: Video Kartları -->
+        <div class="col-md-9">
+            <div class="row g-4">
+                {% for i in "123456"|make_list %}
+                <div class="col-md-6 col-lg-4 video-card" id="Anatomy{{ i }}" style="display: block;">
+                    <div class="card h-100 border-0 shadow-sm" style="background-color:rgb(20, 99, 159); color: #004d40;">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">Anatomy {{ i }}</h6>
+                            <div class="ratio ratio-16x9 mb-3">
+                                <video class="w-100 h-100" controls>
+                                    <source src="{% static 'videos/Anatomy'|add:i|add:'.mp4' %}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <!-- Beğen Butonu (Kalp ikonu) -->
+                            <i class="fa fa-heart" id="heart-icon-{{ i }}" onclick="likeVideo(this)" style="color: white; cursor: pointer; font-size: 30px; display: block; margin-left:  auto;"></i>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showVideoCard(videoId) {
+        document.querySelectorAll('.video-card').forEach(card => card.style.display = 'none');
+        document.getElementById(videoId).style.display = 'block';
+    }
+
+    function showAllVideos() {
+        document.querySelectorAll('.video-card').forEach(card => card.style.display = 'block');
+    }
+
+    document.addEventListener('DOMContentLoaded', showAllVideos);
+
+    function likeVideo(icon) {
+        // Check if the heart icon has already been clicked (liked)
+        if (icon.style.color === 'rgb(239, 43, 43)') {
+            // Remove like (set to white)
+            icon.style.color = 'white';
+        } else {
+            // Add like (set to red)
+            icon.style.color = 'rgb(239, 43, 43)';
+        }
+    }
+</script>
+
+<style>
+    .card:hover {
+        transform: scale(1.03);
+        transition: transform 0.3s ease;
+        
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .list-group-item a:hover {
+        color: rgb(6, 71, 118) !important;
+    }
+
+    .like-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        padding: 0.5rem 1rem;
+        border: none;
+        font-size: 10px;
+    }
+
+    .like-btn i {
+        margin-right: 5px;
+    }
+
+    /* Kalp simgesinin büyüklüğü ve renkleri */
+    .fa-heart {
+        transition: color 0.3s ease;
+    }
+</style>
+
+{% endblock egitimler %}

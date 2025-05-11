@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block page_title %}
+| Doktorlar
+{% endblock page_title %}
+{% block doktorlar %}
+
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .filter-button {
+        cursor: pointer;
+    }
+</style>
+
+<div class="container py-5">
+    <h2 class="text-center mb-5">Doktorlarımız</h2>
+    <div class="row">
+        
+        <!-- Sol taraf - Uzmanlık Alanları -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                <button class="list-group-item list-group-item-action active filter-button" data-filter="Hepsi">Tüm Doktorlar</button>
+                {% for uzmanlik in uzmanliklar %}
+                    <button class="list-group-item list-group-item-action filter-button" data-filter="{{ uzmanlik }}">{{ uzmanlik }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sağ taraf - Doktor Kartları -->
+        <div class="col-md-9">
+            <div class="row g-4" id="doktorlar-listesi">
+                {% for doktor in doktorlar %}
+                <div class="col-md-4 doktor-karti" data-uzmanlik="{{ doktor.uzmanlik }}">
+                    <div class="card shadow h-100">
+                        <img src="{{ doktor.resim }}" class="card-img-top" alt="{{ doktor.ad }} {{ doktor.soyad }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ doktor.ad }} {{ doktor.soyad }}</h5>
+                            <p class="card-text"><strong>Uzmanlık:</strong> {{ doktor.uzmanlik }}</p>
+                            <p class="card-text"><strong>Telefon:</strong> {{ doktor.telefon }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+
+<script>
+    // Filtreleme işlemi
+    const buttons = document.querySelectorAll('.filter-button');
+    const doktorKartlari = document.querySelectorAll('.doktor-karti');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.getAttribute('data-filter');
+
+            doktorKartlari.forEach(kart => {
+                if (filter === 'Hepsi' || kart.getAttribute('data-uzmanlik') === filter) {
+                    kart.style.display = 'block';
+                } else {
+                    kart.style.display = 'none';
+                }
+            });
+
+            // Aktif butonu değiştirme
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        });
+    });
+</script>
+
+{% endblock doktorlar %}

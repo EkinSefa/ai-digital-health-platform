@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block page_title %}
+| iletisim
+{% endblock page_title %}
+{% block harita %}
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<div class="container text-center">
+    <!-- Title centered -->
+    <h1 class="my-4">Türkiyedeki Hastaneler</h1>
+
+    <!-- Map div -->
+    <div id="map" style="height: 400px; margin-top: 20px;"></div>
+
+    <!-- Search box below the map -->
+    <div class="mt-4 d-flex justify-content-center">
+        <!-- Form with the search box and button inside it -->
+        <div class="input-group" style="width: 500px;">
+            <input type="text" id="search-box" class="form-control" placeholder="Hastane ismi ile ara..." style="font-size: 16px;">
+            <div class="input-group-append">
+                <button id="search-btn" class="btn btn-primary" style="font-size: 14px;">Ara</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var map = L.map('map').setView([38.9833, 35.2433], 6);  // Initial map center and zoom level
+
+    // Add the OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Data for the hospitals passed from Django view
+    var hospitals = {{ konum | safe }};
+    var markers = [];
+
+    // Loop through hospitals and add markers to the map
+    hospitals.forEach(function(hospital) {
+        var marker = L.marker([hospital.latitude, hospital.longitude]).addTo(map);
+        marker.bindTooltip(hospital.name, { permanent: false, direction: "top" });
+        markers.push({ name: hospital.name, marker: marker });
+    });
+
+    // Function to search and focus on the hospital marker
+    document.getElementById('search-btn').onclick = function() {
+        var searchQuery = document.getElementById('search-box').value.toLowerCase();
+        var foundHospital = markers.find(function(hospital) {
+            return hospital.name.toLowerCase().includes(searchQuery);
+        });
+
+        if (foundHospital) {
+            map.setView(foundHospital.marker.getLatLng(), 14);  // Zoom into the found hospital
+            foundHospital.marker.openTooltip();  // Open the tooltip for the hospital
+        } else {
+            alert("Hastane bulunamadı. Lütfen başka bir isim deneyin.");
+        }
+    };
+</script>
+<br>
+<br>
+
+
+{% endblock harita %}
+
+{% block iletisim %}
+
+<div class="container">
+    <h2 class="text-center my-4">Fikir ve Görüşlerinizi Bizimle Paylaşın</h2>
+
+    <!-- Başarı veya hata mesajlarını göstermek için ekledik -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'gorus_gonder' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">İsim</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Adınız" required>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Mesajınız</label>
+            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Görüş ve önerilerinizi buraya yazabilirsiniz..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gönder</button>
+    </form>
+</div>
+
+<br><br>
+
+{% endblock iletisim %}
+
+

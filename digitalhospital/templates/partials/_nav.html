@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgb(51, 79, 120);">
+    <div class="container d-flex justify-content-left">
+      <a href="/home" class="navbar-brand me-5">
+        <i class="fas fa-hospital-symbol"></i> Dijital Hastane
+      </a>
+      <ul class="navbar-nav d-flex flex-row gap-5">
+        <li class="nav-item">
+          <a href="/fizyoloji" class="nav-link {% if request.path == '/fizyoloji' %}active{% endif %}">
+            <i class="fas fa-brain"></i> Fizyoloji
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/hastaliklar" class="nav-link {% if request.path == '/hastaliklar' %}active{% endif %}">
+            <i class="fas fa-virus"></i> Hastalıklar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/egitimler" class="nav-link {% if request.path == '/egitimler' %}active{% endif %}">
+            <i class="fas fa-book-medical"></i> Eğitimler
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/doktorlar" class="nav-link {% if request.path == '/doktorlar' %}active{% endif %}">
+            <i class="fas fa-user-md"></i> Doktorlar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/iletisim" class="nav-link {% if request.path == '/iletisim' %}active{% endif %}">
+            <i class="fas fa-envelope"></i> İletişim
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Sayfa içeriği için gerekli boşluğu nav içine açalım -->
+  <div class="container mt-3 pt-4">
+    <!-- Sayfa içeriği buraya gelecek -->
+  </div>
+  

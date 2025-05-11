@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+
+    <title>Dijital Hastane  {% block page_title %}{% endblock page_title %}</title>
+</head>
+<body>
+    
+    <!--navbar-->
+    {% include "partials/_nav.html" %}
+    {% block content %}{% endblock content %}
+    
+    {% block hastalik %}{% endblock hastalik %}
+    {% block hasta %}{% endblock hasta %}
+   
+    {% block harita %}{% endblock harita %}
+    {% block doktorlar %}{% endblock doktorlar %}
+    {% block egitimler %}{% endblock egitimler %}
+    {% block iletisim %}{% endblock iletisim %}
+    {% include "partials/_foother.html" %}
+    {% block css_files %}{% endblock css_files %}
+    {% include "partials/_icon.html" %}
+    
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
+</html>

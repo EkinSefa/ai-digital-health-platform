@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+{% block page_title %}
+| Hastalıklar
+{% endblock page_title %}
+
+{% block hastalik %}
+<div class="container py-5">
+
+    <!-- Modal Açma Butonu -->
+ <!-- Duygu Durumu Kartı -->
+<div class="row justify-content-center mt-5">
+    <div class="col-md-9">
+        <div class="card shadow-lg border-0" style="min-height: 230px; border-radius: 20px;">
+            <div class="row g-">
+                <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                    <!-- Görsel veya ikon -->
+                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQEDVmBW3PkoNA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1707499927789?e=1751500800&v=beta&t=71Vknp0jeTO-IFPFTTERmTV_Ns_arOA2rw88bMft9Vc" class="img-fluid" alt="Emotion Icon" style="max-height: 150px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body text-center d-flex flex-column justify-content-center h-100">
+                        <h4 class="card-title mb-3">
+                            🧠 <strong>Duygularını Benimle Paylaş</strong>
+                        </h4>
+                        <p class="card-text text-muted mb-4">Nasıl hissettiğini bizimle paylaş, duygusal durumunu analiz edelim.</p>
+                        <button type="button" class="btn btn-primary btn-lg rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#tahminModal">
+                            <i class="bi bi-chat-dots-fill me-2"></i> Duygu Durumunu Tahmin Et
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="tahminModal" tabindex="-1" aria-labelledby="tahminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tahminModalLabel">Duygu Durumu Tahmini</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="tahminForm">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="user_text">Cümlenizi girin:</label>
+                            <textarea name="user_text" id="user_text" rows="6" class="form-control" required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Tahmin Et</button>
+                            <button type="button" class="btn btn-secondary" id="temizleBtn">Temizle</button>
+                        </div>
+                    </form>
+
+                    <!-- Sonuçlar burada gösterilecek -->
+                    <div id="tahminSonucu" class="mt-4" style="display: none;">
+                        <h5 class="mb-3">Tüm Sınıf Olasılıkları (%):</h5>
+                        <div id="tahminListesi"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hastalıklar Bölümü -->
+    <h2 class="text-center mb-4 mt-5">Hastalıklar</h2>
+
+    <!-- Arama kutusu -->
+    <div class="row mb-4">
+        <div class="col-md- mx-auto">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchIllness" placeholder="Hastalık Ara...">
+                <button class="btn btn-primary" id="searchButton">Ara</button>
+            </div>
+        </div>
+    </div>
+
+   <!-- Hastalıklar listesi -->
+<div class="row" id="illnessList">
+    {% for hastalik in hastaliklar %}
+    <div class="col-md-3 mb-4 illness-card">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ hastalik.image }}" class="card-img-top img-fluid" alt="{{ hastalik.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ hastalik.title }}</h5>
+                <p class="card-text small">{{ hastalik.description|truncatechars:150 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ hastalik.kaynak }}" target="_blank" class="btn btn-sm btn-outline-primary">Google'da Ara</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+</div>
+
+<!-- JS: Arama ve Tahmin -->
+<script>
+    document.getElementById('searchButton').addEventListener('click', function () {
+        var searchTerm = document.getElementById('searchIllness').value.toLowerCase();
+        var illnessCards = document.querySelectorAll('.illness-card');
+
+        illnessCards.forEach(function (card) {
+            var title = card.querySelector('.card-title').innerText.toLowerCase();
+            card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+
+    // Tahmin Formu Gönderimi
+    document.getElementById('tahminForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const userText = document.getElementById('user_text').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch("{% url 'tahmin' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ user_text: userText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const tahminSonucu = document.getElementById('tahminSonucu');
+            const tahminListesi = document.getElementById('tahminListesi');
+            tahminListesi.innerHTML = '';
+
+            for (const [label, prob] of Object.entries(data.class_probs)) {
+                const progressColor = getProgressColor(label);
+                const div = document.createElement('div');
+                div.classList.add('mb-3');
+                div.innerHTML = `
+                    <strong>${label}:</strong>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar ${progressColor}" role="progressbar" style="width: ${prob}%" aria-valuenow="${prob}" aria-valuemin="0" aria-valuemax="100">${prob}%</div>
+                    </div>
+                `;
+                tahminListesi.appendChild(div);
+            }
+
+            tahminSonucu.style.display = 'block';
+        })
+        .catch(error => {
+            alert("Tahmin yapılırken hata oluştu.");
+            console.error(error);
+        });
+    });
+
+    // Temizle Butonu
+    document.getElementById('temizleBtn').addEventListener('click', function () {
+        document.getElementById('user_text').value = '';
+        document.getElementById('tahminSonucu').style.display = 'none';
+        document.getElementById('tahminListesi').innerHTML = '';
+    });
+
+    function getProgressColor(label) {
+        const colors = {
+            "Anxiety": "bg-info",
+            "Bipolar": "bg-secondary",
+            "Depression": "bg-dark",
+            "Normal": "bg-success",
+            "Personality disorder": "bg-primary",
+            "Stress": "bg-warning",
+            "Suicidal": "bg-danger"
+        };
+        return colors[label] || "bg-light";  // Default color if not found
+    }
+</script>
+{% endblock hastalik %}
+
+
+
+
+
