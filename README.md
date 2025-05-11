@@ -26,8 +26,8 @@
    Platform, güncel sağlık haberlerini bir API üzerinden çekerek kullanıcılara sunar. Kullanıcılar, sağlık dünyasında olup biten gelişmeleri, tedavi yöntemlerini, hastalıklarla ilgili en son araştırmaları ve diğer sağlık haberlerini anlık olarak takip edebilirler.
    
 ### 7. **Model Doğruluğu**   
-✅ PyTorch Model Accuracy: 0.9118, F1-score: 0.9092
-📁 Model başarıyla kaydedildi: deep_model.pt
+- ✅ PyTorch Model Accuracy: 0.9118, F1-score: 0.9092
+- 📁 Model başarıyla kaydedildi: deep_model.pt
 
 
 
