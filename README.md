@@ -24,6 +24,12 @@
 
 ### 7. **Güncel Sağlık Haberleri**
    Platform, güncel sağlık haberlerini bir API üzerinden çekerek kullanıcılara sunar. Kullanıcılar, sağlık dünyasında olup biten gelişmeleri, tedavi yöntemlerini, hastalıklarla ilgili en son araştırmaları ve diğer sağlık haberlerini anlık olarak takip edebilirler.
+   
+### 7. **Model Doğruluğu**   
+✅ PyTorch Model Accuracy: 0.9118, F1-score: 0.9092
+📁 Model başarıyla kaydedildi: deep_model.pt
+
+
 
 ## 📦 Teknolojiler
 
@@ -35,14 +41,16 @@
 
 ## Proje görselleri
 
-<img src="https://github.com/user-attachments/assets/5585257d-d3cc-4cf8-bfbf-2f4a4e37a47a" width="450"/>
-<img src="https://github.com/user-attachments/assets/94a2e7c7-07c1-40d0-bcad-c80f86372c76" width="450"/>
-<img src="https://github.com/user-attachments/assets/3ea14190-e75a-4238-8a37-1f66a67d0b08" width="450"/>
-<img src="https://github.com/user-attachments/assets/a795261e-e066-4a61-a9c3-fcbfd12ec4bb" width="450"/>
-<img src="https://github.com/user-attachments/assets/6c8c275a-cae8-474a-a305-ca4869b0c48d" width="450"/>
-<img src="https://github.com/user-attachments/assets/1e4c8b74-9823-466f-b367-457758bfe1a7" width="450"/>
-<img src="https://github.com/user-attachments/assets/08faf224-e5ef-442e-aa91-668d58bef845" width="450"/>
-<img src="https://github.com/user-attachments/assets/0312ec43-089e-4e3d-9430-21e826c372b4" width="450"/>
+<img src="https://github.com/user-attachments/assets/5585257d-d3cc-4cf8-bfbf-2f4a4e37a47a" width="400"/>
+<img src="https://github.com/user-attachments/assets/94a2e7c7-07c1-40d0-bcad-c80f86372c76" width="400"/>
+<img src="https://github.com/user-attachments/assets/3ea14190-e75a-4238-8a37-1f66a67d0b08" width="400"/>
+<img src="https://github.com/user-attachments/assets/a795261e-e066-4a61-a9c3-fcbfd12ec4bb" width="400"/>
+<img src="https://github.com/user-attachments/assets/6c8c275a-cae8-474a-a305-ca4869b0c48d" width="400"/>
+<img src="https://github.com/user-attachments/assets/1e4c8b74-9823-466f-b367-457758bfe1a7" width="400"/>
+<img src="https://github.com/user-attachments/assets/08faf224-e5ef-442e-aa91-668d58bef845" width="400"/>
+<img src="https://github.com/user-attachments/assets/0312ec43-089e-4e3d-9430-21e826c372b4" width="400"/>
+<img src="https://github.com/user-attachments/assets/528ff1a3-6d67-48ba-b369-093162163ce0" width="400"/>
+
 
 ## 📋 Kurulum
 
